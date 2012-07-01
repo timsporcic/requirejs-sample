@@ -10,9 +10,11 @@ require.config({
     }
 });
 
-define(['jquery','datasource','views','bootstrap','domReady!'], function($,datasource,views){
+require(['jquery','datasource','views','upper','bootstrap','domReady!'], function($,datasource,views,upper){
 
     $('#customer-rows').html( views.tablerow( datasource.list() ));
+
+    console.log( upper('tim sporcic'));
 
     $('#customer-table').on('click','a.edit-customer', function(e) {
         e.preventDefault();

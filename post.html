@@ -1,0 +1,102 @@
+<h1>Getting Modular with JavaScript</h1>
+
+<p>The role of JavaScript for application development has seen a serious uptick over the past few years.
+    Just a few years ago, we would use JavaScript for client-side form validation and some AJAX and UI
+    tricks using Prototype and Scriptaculous. Even more sophisticated started to pop up, like Dojo, ExtJS
+    and the JQuery / JQuery UI combo. It became possible to create feature-rich applications with near-desktop
+    fidelity, all using JavaScript in the browser.</p>
+
+    <p>With that growth though, JavaScript started to creak at the seams with some of the limitations of the language.
+    Douglas Crockford's "JavaScript: the Good Parts" provided a thoughtful guide for how to avoid the dangerous
+    areas of the language, but there are some constructs present in languages like Java, C++ and C# that have to
+    be improvised in JavaScript.</p>
+
+    <p>One of the biggest areas has been in modular program. JavaScript, while extremely powerful even with it's
+    simplicity, has no default notion of namespaces or module loading. This is the sort of modularity addressed
+    by the <code>package</code> keyword in Java or <code>namespace</code> in C# or C++. Various libraries have
+    created their own workarounds to this code modularity issue, but there isn't anything native in the current
+    ECMAScript specification to address this.</p>
+
+    <p>Fortunately, out of this vacuum, two strong frameworks have emerged. For server-side work, NodeJS
+    embraced the CommonJS standard. For client-side work, AMD, as implemented in RequireJS, has emerged
+    as a rallying point for writing modular code.</p>
+
+    <p>Making effective use of RequireJS requires a mindset shift of developers. In the "good" old days,
+    a developer would successively load a series of JavaScript files through the <code>&lt;script&gt;</code> tag.
+    This was simple enough for a few files, but it quickly turns in to a maintenance nightmare in a
+    JavaScript-heavy application. Without a clear way to define modules, JavaScript code can quickly become
+    convoluted and difficult to maintain. Loading multiple JavaScript files via the <code>&lt;script&gt;</code>
+    tag can also drag down application performance as the user has to wait for the scripts to load to interact
+    with the application.</p>
+
+    <p>RequireJS brings sanity to this situation. It provides not only a clear definition for what is a module,
+    but it also provides the mechanism to load the modules asynchronously. This improves code maintainability
+    and also performance by allowing a page to only load the modules it needs.</p>
+
+    <p>The key concept with RequireJS and AMD is the module. A module is simply a JavaScript function that returns
+    a value. That value is typically another function or a JavaScript object. For example, a simple module that
+    defines a way to convert a String to uppercase would look like this:</p>
+
+<pre lang="javascript">
+define(function() {
+    return function(s) { return s.toUpperCase(); };
+});
+</pre>
+
+    <p>The <code>define</code> function is created by the RequireJS library and allows the definition of a module.
+    Convention is to use the name of the file as the name of the module, so if I save this snippet as <code>upper.js</code>
+    I could make use of this module like this:</p>
+
+<pre lang="javascript">
+require(['upper'],function(upper) {
+    console.log( upper('hello world') );
+});
+</pre>
+
+    <p>In this case, I use the <code>require</code> method so specify some code I want to execute, along with its
+    dependencies, which is the "upper" module created above. RequireJS express
+    this relationship by having the first parameter to the <code>require</code> call be an array of the modules a
+    new module depends on. RequireJS will deal with loading the dependencies and will pass each dependency, in order,
+    to the function that is the module definition. The parameter name is arbitrary, but convention is to use the
+    name of the module.</p>
+
+    <p>This is a pretty basic example to demonstrate what a module is. Now I'll put some more rubber to the road and
+    show a complete picture. The code for this is up on my
+    <a href="https://github.com/timsporcic/requirejs-sample">GitHub account</a>, so you can grab it for yourself.</p>
+
+    <p>This example uses RequireJS, Twitter Bootstrap, doT and some RequireJS plugins to create a simple page
+    that generates a table via doT templates and a modal dialog to edit the row when clicked on. I'm just using
+    a JSON file as the datasource, so there is no updating, but that eliminates the need for a backend in the example.</p>
+
+    <p>The <code>&lt;head&gt;</code> element of the <code>index.html</code> setups up RequireJS and the Bootstrap CSS file.
+    Note the <code>data-main</code> attribute on the <code>&lt;script&gt;</code> tag that loads RequireJS. This
+    specifies the overall application-level JavaScript file used by RequireJS. In this case, it means to
+    look for a file called main.js under the <code>scripts</code> directory.</p>
+
+<pre lang="html" line="1">
+&lt;head>
+    &lt;meta charset="utf-8">
+    &lt;title>RequireJS Sample&lt;/title>
+    &lt;link rel="stylesheet" href="styles/bootstrap.css">
+    &lt;script src="scripts/require-jquery.js" data-main="scripts/main">&lt;/script>
+&lt;/head>
+</pre>
+
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+(RequireJS Sample Code)[https://github.com/timsporcic/requirejs-sample]
+(RequireJS Core Plugins)[http://requirejs.org/docs/download.html#plugins]
+(Extra RequireJS Plugins)[https://github.com/millermedeiros/requirejs-plugins]
+
