@@ -3,8 +3,8 @@ define(['doT',
         'text!templates/dialog.html'],
         function(doT, tablerowText, dialogText){
 
-    return {
-        tablerow: doT.template(tablerowText),
-        dialog: doT.template(dialogText)
-    };
+  return {
+    tablerow: doT.template(tablerowText),
+    dialog: doT.template(dialogText)
+  };
 });
