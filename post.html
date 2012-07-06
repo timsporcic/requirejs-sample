@@ -12,13 +12,21 @@ RequireJS brings sanity to this situation. It provides not only a clear definiti
 
 <h4>Modules</h4>
 The key concept with RequireJS and AMD is the module. A module is simply a JavaScript function that returns a value. That value is typically another function or a JavaScript object. For example, a simple module that defines a way to convert a String to uppercase might look like this:
-<pre lang="javascript">define(function() {
-    return function(s) { return s.toUpperCase(); };
-});</pre>
+
+<pre lang="javascript">
+define(function() {
+  return function(s) { return s.toUpperCase(); };
+});
+</pre>
+
 The global <code>define()</code> function is created by the RequireJS library and allows the definition of a module. Convention is to use the name of the file as the name of the module, so if we save this snippet as <code>upper.js</code> we could make use of this module like this:
-<pre lang="javascript">require(['upper'],function(upper) {
-    console.log( upper('hello world') );
-});</pre>
+
+<pre lang="javascript">
+require(['upper'],function(upper) {
+  console.log( upper('hello world') );
+});
+</pre>
+
 In this case, we use the global RequireJS <code>require()</code> method to specify some code we want to execute, along with its dependencies, which is the <em>upper</em> module created above. RequireJS express this relationship by having the first parameter to the <code>require()</code> call be an array of the modules our code will depend on. RequireJS will deal with loading the dependencies and will pass each dependency, in order, to the function that is the module definition. The parameter name is arbitrary, but convention is to use the name of the module.
 
 This is a pretty basic example to demonstrate what a module is. Now we'll put some rubber to the road and show a more complete picture. The code for this is up on my <a href="https://github.com/timsporcic/requirejs-sample" target="_blank">GitHub account</a>, so you can grab it for yourself.
@@ -28,7 +36,8 @@ This example uses RequireJS, <a href="http://jquery.com" target="_blank">JQuery<
 Note that we're using the version of RequireJS which <a href="http://requirejs.org/docs/download.html" target="_blank">includes JQuery</a>. Since JQuery is not AMD-aware, this combined RequireJS/JQuery file is the easiest way to include JQuery as a module.
 <h4>The Main Page</h4>
 The <code>&lt;head&gt;</code> element of <code>index.html</code> sets up RequireJS and the Bootstrap CSS file. Note the <code>data-main</code> attribute on the <code>&lt;script&gt;</code> tag on <strong>line 7</strong> that loads RequireJS. This specifies the overall application-level JavaScript file used by RequireJS for configuration. It means RequireJS will attempt to load a file called <code>main.js</code> under the scripts directory.
-<pre lang="html4strict">&lt;!DOCTYPE html&gt;
+<pre lang="html4strict" line="1" escaped="true">
+&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;meta charset="utf-8"&gt;
@@ -79,11 +88,13 @@ The <code>&lt;head&gt;</code> element of <code>index.html</code> sets up Require
 &lt;/div&gt;
 
 &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 The rest of the <code>index.html</code> file sets up an empty table where we'll display the rows of data using a template. It also defines a Bootstrap modal dialog, again with an empty body which will get populated with a template.
 <h4>RequireJS Configuration</h4>
 The contents of the <code>main.js</code> file configure RequireJS, and, in this case, make use of some modules and execute some code. The configuration is handled via the <code>require.config()</code> call at the top of the file, and the code at the bottom:
-<pre lang="javascript">require.config({
+<pre lang="javascript" line="1">
+require.config({
   paths: {
     bootstrap: 'lib/bootstrap.min',
     doT: 'lib/doT.min',
@@ -112,7 +123,9 @@ require(['jquery','datasource','views','bootstrap','domReady!'],
     datasource.update( $('#customer-form').serialize() );
     $('#customer-modal').modal('hide');
   });
-});</pre>
+});
+</pre>
+
 RequireJS has numerous, well-documented <a href="http://requirejs.org/docs/api.html#config" target="_blank"> configuration options</a>. We use the <code>paths</code> option to specify the location of the external dependencies we plan on using. The <code>paths</code> option keeps us from having to hard-code the physical path to a module. For example, instead of specifying <code>['lib/bootstrap']</code> as a module dependency, configuring the path lets us do this <code>['bootstrap']</code>. This provides a nice level of abstraction which will also make code maintenance easier if we need to change something.
 
 Note that none of the dependencies defined in the config have a file extension. RequireJS will automatically append the <code>.js</code> extension when it attempts to load the actual file. The location of the dependencies is relative to the location of the <code>main.js</code> file, although that can be altered via configuration options.
@@ -130,16 +143,19 @@ On <strong>line 14</strong> we define the function that will get called when all
 Note in this example we are using the JQuery <code>$</code> passed as a parameter to our function. JQuery is still going to populate the global namespace with the <code>$</code>, since it is not AMD-aware. One of the goals of AMD is to prevent pollution of the global namespace so you should only make use of parameters passed to your function and not make any assumptions about the global namespace.
 <h4>The Views</h4>
 The <code>templates.js</code> file in the scripts/templates directory handles loading the doT templates from HTML files and generating the content based on the JSON data provided:
-<pre lang="javascript">define(['doT',
+<pre lang="javascript" line="1">
+define(['doT',
         'text!templates/table-row.html',
         'text!templates/dialog.html'],
         function(doT, tablerowText, dialogText){
 
   return {
-      tablerow: doT.template(tablerowText),
-      dialog: doT.template(dialogText)
+    tablerow: doT.template(tablerowText),
+    dialog: doT.template(dialogText)
   };
-});</pre>
+});
+</pre>
+
 There is a lot going on in these 10 lines of code. We include the <em>doT</em> module as our first dependency. On <strong>lines 2 and 3</strong>, we make use of another RequireJS <a href="http://requirejs.org/docs/download.html#plugins" target="_blank">core plugin</a>: the <em>text</em> plugin. This plugin will load a text file and treat it as a dependency. The path to the file comes after the exclamation mark.
 
 <strong>Line 4</strong> defines the function to be called when the dependencies are ready. Since we're using the <em>text</em> plugin to load some files, the contents of each of those files are passed as parameters to this function. The names of the parameters are arbitrary, but the order must match the order the dependencies are specified in.
@@ -147,7 +163,8 @@ There is a lot going on in these 10 lines of code. We include the <em>doT</em> m
 The contents of our module is what we return on <strong>line 6</strong>. We return a JavaScript object that contains two functions which point to the compiled doT templates.
 <h4>The Datasource</h4>
 The <code>json-datasource.js</code> file in the scripts/data directory is our simple datasource:
-<pre lang="javascript">define(['json!data/customers'], function(customers){
+<pre lang="javascript" line="1">
+define(['json!data/customers'], function(customers){
 
   var getRow = function(id) {
     return customers[id];
@@ -166,7 +183,9 @@ The <code>json-datasource.js</code> file in the scripts/data directory is our si
     list: getAll,
     update: update
   };
-});</pre>
+});
+</pre>
+
 We only have one dependency, the <em>json</em> plugin. This is one of the <a href="https://github.com/millermedeiros/requirejs-plugins" target="_blank">Extra Plugins</a> for RequireJS. It works similar to the <em>text</em> plugin, but it gives us the data as a JSON object instead of text. Here we are loading the <code>data/customers.js</code> file to get the JSON data. Since we dont specify a file extension, RequireJS will use <code>.js</code> by default.
 
 This module returns a JavaScript object that exposes three functions for acccessing the data. Since we're only reading data from a file, the <code>update()</code> function is a no-op, but the two read functions get data out of the JSON object we loaded from the file.
@@ -187,7 +206,10 @@ This is a simple example of a few modules working together, but it shows some of
 <h4>Closing Thoughts</h4>
 <ol>
   <li>RequireJS and AMD are cool, once they click. The <em>key</em> concept is understanding what a "module" really is. A module is just a function that returns a value that is passed as a parameter to another module. This can be a simple value, for example a PI module that returns 3.14, but it is usually a function or JavaScript object containing several functions.</li>
+
   <li>RequireJS includes the <code>r.js</code> utility to package up all the modules into a single JavaScript file. There is debate on whether this is a good or bad practice, and it is definitely not something you would use during development, but it gives you options.</li>
+
   <li>ECMAScript will eventually have <a href="http://wiki.ecmascript.org/doku.php?id=harmony:modules" target="_blank">support for modules</a> via the Harmony Project, and that support will probably show up pretty quickly in the fast-moving world of <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a> and <a href="http://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a>, but it could be a while before Internet Explorer catches up, so RequireJS is a good choice for today.</li>
+
   <li>RequireJS plays nicely with other JavaScript libraries, and there are plenty of good tutorials out there. If you're a fan of <a href="http://backbonejs.org/" target="_blank">Backbone</a>, the <a href="http://backbonetutorials.com/" target="_blank">Backbone Tutorials</a> site has a <a href="http://backbonetutorials.com/organizing-backbone-using-modules/" target="_blank">great tutorial</a> on using RequireJS with Backbone. There is a similar <a href="http://knockoutjs.com/documentation/amd-loading.html" target="_blank">good tutorial</a> for <a href="http://knockoutjs.com" target="_blank">KnockoutJS</a>.</li>
 </ol>
