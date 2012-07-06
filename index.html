@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>RequireJS Sample</title>
-    <link rel="stylesheet" href="styles/bootstrap.css">
-    <script src="scripts/require-jquery.js" data-main="scripts/main"></script>
+  <meta charset="utf-8">
+  <title>RequireJS Sample</title>
+  <link rel="stylesheet" href="styles/bootstrap.css">
+  <script src="scripts/require-jquery.js" data-main="scripts/main"></script>
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <div class="page-header">
-            <h1>Customers <small>A RequireJS version</small></h1>
-        </div>
+  <div class="page-header">
+    <h1>Customers
+      <small>A RequireJS version</small>
+    </h1>
+  </div>
 
-        <div class="row">
-            <div class="span8">
-                <table class="table-bordered table" id="customer-table">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customer-rows">
+  <div class="row">
+    <div class="span8">
+      <table class="table-bordered table" id="customer-table">
+        <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="customer-rows">
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
 
-    <div class="modal hide fade" id="customer-modal">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3>Customer</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
+<div class="modal hide fade" id="customer-modal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>Customer</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
 
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn btn-success save-customer">Save</a>
-            <a href="#" class="btn" data-dismiss="modal">Close</a>
-        </div>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-success save-customer">Save</a>
+    <a href="#" class="btn" data-dismiss="modal">Close</a>
+  </div>
+</div>
 
 </body>
 </html>
